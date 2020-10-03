@@ -9,7 +9,7 @@ import UIKit
 
 class NewPlaceViewController: UITableViewController {
     
-    var newPlace: Place?
+    var newPlace = Place()
     var imageisChanged = false
     
     @IBOutlet weak var placeImage: UIImageView!
@@ -23,8 +23,12 @@ class NewPlaceViewController: UITableViewController {
         
         tableView.tableFooterView = UIView()
         
-        saveButton.isEnabled = false
+        DispatchQueue.main.async {
+            self.newPlace.savePlaces()
+            print(realm.configuration.fileURL?.absoluteURL)
+        }
         
+        saveButton.isEnabled = false
         placeName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         
     }
@@ -64,24 +68,24 @@ class NewPlaceViewController: UITableViewController {
         }
     }
     
-    func saveNewPlace(){
-        
-        var image: UIImage?
-        
-        if imageisChanged {
-            image = placeImage.image
-        } else {
-            image = #imageLiteral(resourceName: "imagePlaceholder")
-        }
-        
-        newPlace = Place(name: placeName.text!,
-                         location: placeLocation.text,
-                         type: placeType.text,
-                         image: image,
-                         restarauntImage: nil)
-        
-    }
-    
+//    func saveNewPlace(){
+//        
+//        var image: UIImage?
+//        
+//        if imageisChanged {
+//            image = placeImage.image
+//        } else {
+//            image = #imageLiteral(resourceName: "imagePlaceholder")
+//        }
+//        
+//        newPlace = Place(name: placeName.text!,
+//                         location: placeLocation.text,
+//                         type: placeType.text,
+//                         image: image,
+//                         restarauntImage: nil)
+//        
+//    }
+//    
     @IBAction func cancelAction(_ sender: Any) {
         dismiss(animated: true)
     }
